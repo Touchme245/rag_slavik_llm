@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: ramsrib/pgvector
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ragdb
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5430:5432"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data/
+      - ./postgres/scripts:/docker-entrypoint-initdb.d
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+      - "11431:11431"
+#    entrypoint: >
+#      /bin/sh -c "
+#      ollama serve &
+#      sleep 2 &&
+#      ollama pull gemma3:4b &&
+#      ollama pull mxbai-embed-large &&
+#      wait
+#      "
+    volumes:
+      - ./ollama:/root/.ollama
+
+volumes:
+  pgdata:
+    driver: local
