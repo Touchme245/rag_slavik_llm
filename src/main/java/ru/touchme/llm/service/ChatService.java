@@ -49,9 +49,13 @@ public class ChatService {
     }
 
     public void deleteChat(Long chatId, String username) {
+        System.out.println("чат с ид" + chatId);
+        System.out.println("имя" + username);
         var chat = chatRepository.findById(chatId).orElseThrow(EntityNotFoundException::new);
         validateChatPermissions(chat, username);
+        System.out.println("удаляю");
         chatRepository.delete(chat);
+        System.out.println("удалил");
     }
 
     public SseEmitter proceedStreamingInteraction(Long chatId, String username, String prompt) {

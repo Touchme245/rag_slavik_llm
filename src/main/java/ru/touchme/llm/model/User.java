@@ -22,7 +22,6 @@ public class User {
     private Integer id;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER) // todo fix для регистрации не нужны чаты лол
     private List<Chat> chats = new ArrayList<>();

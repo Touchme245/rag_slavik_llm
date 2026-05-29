@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
     <meta charset="UTF-8">
-
     <title th:text="${chat != null} ? 'Slavik GPT — ' + chat.title : 'Slavik GPT'">
         Slavik GPT
     </title>
@@ -17,31 +14,23 @@
 
     <script defer
             th:src="@{/js/chat.js}"></script>
-
 </head>
 
 <body class="chat-body">
 
-<div class="chat-layout">
+<div class="chat-container">
 
     <!-- Sidebar -->
-
     <aside class="sidebar">
 
-        <div class="sidebar-header">
+        <div class="sidebar-top">
 
-            <div class="brand">
+            <h1>Slavik GPT</h1>
 
-                <h1>Slavik GPT</h1>
-
-                <p>
-                    AI workspace
-                </p>
-
-            </div>
-
+            <!-- LOGOUT -->
             <form th:action="@{/logout}"
-                  method="post">
+                  method="post"
+                  class="logout-form">
 
                 <button type="submit"
                         class="logout-btn">
@@ -52,44 +41,46 @@
 
             </form>
 
+            <!-- Chat list -->
+            <div class="chat-list-wrapper">
+
+                <ul class="chat-list">
+
+                    <li th:each="c : ${chats}"
+                        th:classappend="${chat != null and chat.id != null and c.id == chat.id} ? 'active' : ''">
+
+                        <a th:href="@{/chat/{id}(id=${c.id})}">
+
+                            <span th:text="${c.title}">
+                                Чат
+                            </span>
+
+                        </a>
+
+                        <!-- Delete -->
+                        <form th:action="@{/chat/{id}/delete(id=${c.id})}"
+                              method="post"
+                              onsubmit="return confirm('Удалить чат?');">
+
+                            <button type="submit"
+                                    class="delete-chat-btn">
+
+                                ✕
+
+                            </button>
+
+                        </form>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
         </div>
 
-        <div class="sidebar-content">
-
-            <ul class="chat-list">
-
-                <li th:each="c : ${chats}"
-                    th:classappend="${chat != null and chat.id != null and c.id == chat.id} ? 'active' : ''">
-
-                    <a th:href="@{/chat/{id}(id=${c.id})}"
-                       class="chat-link">
-
-                        <span th:text="${c.title}">
-                            Chat
-                        </span>
-
-                    </a>
-
-                    <form th:action="@{/chat/{id}/delete(id=${c.id})}"
-                          method="post"
-                          onsubmit="return confirm('Delete chat?');">
-
-                        <button type="submit"
-                                class="delete-chat-btn">
-
-                            ×
-
-                        </button>
-
-                    </form>
-
-                </li>
-
-            </ul>
-
-        </div>
-
-        <div class="sidebar-footer">
+        <!-- Bottom -->
+        <div class="sidebar-bottom">
 
             <form action="/chat/new"
                   method="post"
@@ -97,13 +88,13 @@
 
                 <input type="text"
                        name="title"
-                       placeholder="New chat"
+                       placeholder="Название нового чата"
                        required/>
 
                 <button type="submit"
-                        class="new-chat-btn">
+                        class="new-chat">
 
-                    Create Chat
+                    Новый чат
 
                 </button>
 
@@ -114,7 +105,6 @@
     </aside>
 
     <!-- Main -->
-
     <main class="chat-main">
 
         <div class="messages"
@@ -124,18 +114,13 @@
 
                 <div th:if="${!#lists.isEmpty(chat.history)}"
                      th:each="entry : ${chat.history}"
-                     th:class="${entry.role.role eq 'user'} ? 'message user' : 'message assistant'">
+                     th:class="${entry.role.role eq 'user'} ? 'message user' : 'message mentor'">
 
-                    <div class="avatar">
-
-                        <img th:src="${entry.role.role eq 'user'} ? '/images/user.png' : '/images/mentor.png'"
-                             alt="avatar">
-
-                    </div>
+                    <img th:src="${entry.role.role eq 'user'} ? '/images/user.png' : '/images/mentor.png'"
+                         alt="avatar">
 
                     <div class="bubble"
                          th:text="${entry.content}">
-
                     </div>
 
                 </div>
@@ -144,24 +129,34 @@
 
         </div>
 
-        <div th:if="${chat != null}"
-             class="input-wrapper">
+        <div th:if="${chat != null}">
 
             <form th:action="@{/chat/{chatId}/entry(chatId=${chat.id})}"
                   method="post"
-                  class="input-form">
+                  class="input-area">
 
-                <textarea id="chat-input"
-                          name="prompt"
-                          placeholder="Ask anything..."
-                          required></textarea>
+                <div class="input-bubble">
 
-                <button type="button"
-                        id="send-button">
+                    <label for="chat-input"
+                           class="sr-only">
 
-                    Send
+                        Спрашивай
 
-                </button>
+                    </label>
+
+                    <textarea id="chat-input"
+                              name="prompt"
+                              placeholder="Спрашивай..."
+                              required></textarea>
+
+                    <button type="button"
+                            id="send-button">
+
+                        SEND
+
+                    </button>
+
+                </div>
 
             </form>
 
@@ -172,5 +167,4 @@
 </div>
 
 </body>
-
 </html>
