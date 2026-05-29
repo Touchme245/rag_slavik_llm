@@ -340,10 +340,18 @@ body.chat-body {
 
 .message img {
 
-    width: 44px;
-    height: 44px;
+    width: 54px;
+    height: 54px;
 
     border-radius: 50%;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+
+    border: 2px solid rgba(255,255,255,0.12);
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
 /* bubble */
