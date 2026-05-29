@@ -30,6 +30,10 @@ public class Chat {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatEntry> history;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public void addEntry(ChatEntry entry) {
         history.add(entry);
 

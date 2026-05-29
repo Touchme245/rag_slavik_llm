@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Slavik GPT — Login</title>
+
+    <link rel="stylesheet"
+          type="text/css"
+          th:href="@{/css/auth.css}">
+</head>
+
+<body class="auth-body">
+
+<div class="auth-layout">
+
+    <div class="auth-card">
+
+        <div class="brand-block">
+
+            <h1>Slavik GPT</h1>
+
+            <p>
+                AI workspace for serious conversations
+            </p>
+
+        </div>
+
+        <div th:if="${param.error}"
+             class="message error">
+
+            Invalid username or password
+
+        </div>
+
+        <div th:if="${param.logout}"
+             class="message success">
+
+            You have been logged out
+
+        </div>
+
+        <form th:action="@{/login}"
+              method="post"
+              class="auth-form">
+
+            <div class="input-group">
+
+                <label>
+                    Username
+                </label>
+
+                <input type="text"
+                       name="username"
+                       required>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input type="password"
+                       name="password"
+                       required>
+
+            </div>
+
+            <button type="submit"
+                    class="auth-button">
+
+                Sign In
+
+            </button>
+
+        </form>
+
+        <a th:href="@{/register}"
+           class="auth-link">
+
+            Create account
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
