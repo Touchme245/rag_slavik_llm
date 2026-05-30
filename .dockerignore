@@ -1,0 +1,14 @@
+target/
+.git/
+.idea/
+.vscode/
+
+ollama/
+postgres/
+pgdata/
+data/
+
+*.log
+.env
+
+docker-compose.yml

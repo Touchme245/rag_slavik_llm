@@ -4,6 +4,7 @@ services:
   postgres:
     image: ramsrib/pgvector
     container_name: postgres_container
+    restart: unless-stopped
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -18,19 +19,32 @@ services:
   ollama:
     image: ollama/ollama
     container_name: ollama
+    restart: unless-stopped
     ports:
       - "11434:11434"
       - "11431:11431"
-#    entrypoint: >
-#      /bin/sh -c "
-#      ollama serve &
-#      sleep 2 &&
-#      ollama pull gemma3:4b &&
-#      ollama pull mxbai-embed-large &&
-#      wait
-#      "
+    entrypoint: >
+      /bin/sh -c "
+      ollama serve &
+      sleep 2 &&
+      ollama pull qwen3:8b &&
+      ollama pull mxbai-embed-large &&
+      wait
+      "
     volumes:
       - ./ollama:/root/.ollama
+  slavik-llm: #for stepan only!
+    image: touchme245/slavik-llm:latest
+    container_name: slavik-llm
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ollama
+      - postgres
+    environment:
+      OLLAMA_URL: http://ollama:11434
+      DB_URL: jdbc:postgresql://postgres:5432/ragdb
 
 volumes:
   pgdata:

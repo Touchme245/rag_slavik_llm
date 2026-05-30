@@ -3,14 +3,14 @@ spring:
     name: llm
   ai:
     ollama:
-      base-url: http://localhost:11434
+      base-url: ${OLLAMA_URL:http://localhost:11434}
       chat:
-        model: gemma3:4b
+        model: qwen3:8b
         options:
           timeout: 120s
           keep-alive: 10m
   datasource:
-    url: jdbc:postgresql://localhost:5430/ragdb
+    url: ${DB_URL:jdbc:postgresql://localhost:5430/ragdb}
     username: user
     password: password
   jpa:
